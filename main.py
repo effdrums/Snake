@@ -1,7 +1,7 @@
 import pygame, sys
 from pygame.locals import QUIT
 import time
-
+import random
 
 
 pygame.init()
@@ -20,10 +20,9 @@ class Snake:
   next_pos = [20,10]
   
   def __init__(self):
-    print("init")
     self.rect.append(pygame.Rect(20,10,10,10))
-    self.rect.append(pygame.Rect(9,10,10,10))
-    self.rect.append(pygame.Rect(-2,10,10,10))
+    #self.rect.append(pygame.Rect(9,10,10,10))
+    #self.rect.append(pygame.Rect(-2,10,10,10))
 
   def move_right(self):
     #for y in range(len(self.rect)):
@@ -43,30 +42,54 @@ class Snake:
 
   def direction(self, dir):
     (self.direction) = dir
-    print(dir)
 
-  def update(self):
+  def update(self,rect_apple):
+    
     self.next_pos = [self.rect[0].x,self.rect[0].y]
-    print(self.direction)
     if self.direction == 1:
+      if self.rect[0].colliderect(rect_apple):
+        self.rect.append(pygame.Rect(self.rect[0].x-11,self.rect[0].y,10,10))
+      
       self.move_right()
+      
     elif self.direction == 2:
+      if self.rect[0].colliderect(rect_apple):
+        self.rect.append(pygame.Rect(self.rect[0].x+11,self.rect[0].y,10,10))
       self.move_left()
-    elif self.direction == 3: 
+    elif self.direction == 3:
+      if self.rect[0].colliderect(rect_apple):
+          self.rect.append(pygame.Rect(self.rect[0].x,self.rect[0].y+11,10,10))
       self.move_up()
     elif self.direction == 4: 
+      if self.rect[0].colliderect(rect_apple):
+          self.rect.append(pygame.Rect(self.rect[0].x,self.rect[0].y-11,10,10))
       self.move_down()
     
 
 snake = Snake()
 snake.direction(1)
 
+count = 0; 
+rand_pos = [random.randint(0,400-10),random.randint(0,300-10)]
+
 while True:
 
   DISPLAYSURF.fill(background_colour)
 
-  snake.update()
+  snake.update( pygame.Rect(rand_pos,[10,10]))
   time.sleep(0.1)
+
+  if count < 40: 
+    count += 1
+  elif count == 40:
+    rand_pos = [random.randint(0,400-10),random.randint(0,300-10)]
+    count = 0
+
+  
+
+
+  pygame.draw.rect(screen, (213, 52, 235), pygame.Rect(rand_pos,[10,10]))
+
 
   pygame.draw.rect(screen, (255,0,0), snake.rect[0])
   
