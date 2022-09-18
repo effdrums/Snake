@@ -5,12 +5,12 @@ import random
 
 
 pygame.init()
-DISPLAYSURF = pygame.display.set_mode((400, 300))
+display = [300,200]
 pygame.display.set_caption('SNAKE')
 background_colour = (59,150,80)
 yellow = (204,197,92)
-(width, height) = (300, 200)
-screen = pygame.display.set_mode((width, height))
+
+screen = pygame.display.set_mode(display)
 screen.fill(background_colour)
 
 class Snake:
@@ -27,18 +27,28 @@ class Snake:
   def move_right(self):
     #for y in range(len(self.rect)):
       self.rect[0].move_ip(11,0)
-
+      if(self.rect[0].x > display[0]):
+        self.rect[0].x = 0 
+        
   def move_left(self):
     #for y in range(len(self.rect)):
       self.rect[0].move_ip(-11,0)
+      if(self.rect[0].x < 0):
+        self.rect[0].x = display[0] 
+
   
   def move_down(self):
     #for y in range(len(self.rect)):
       self.rect[0].move_ip(0,11)
+      if(self.rect[0].y > display[1]):
+        self.rect[0].y = 0
 
   def move_up(self):
     #for y in range(len(self.rect)):
       self.rect[0].move_ip(0,-11)
+      if(self.rect[0].y < 0):
+        self.rect[0].y = display[1] 
+
 
   def direction(self, dir):
     (self.direction) = dir
@@ -74,7 +84,7 @@ rand_pos = [random.randint(0,400-10),random.randint(0,300-10)]
 
 while True:
 
-  DISPLAYSURF.fill(background_colour)
+  screen.fill(background_colour)
 
   snake.update( pygame.Rect(rand_pos,[10,10]))
   time.sleep(0.1)
